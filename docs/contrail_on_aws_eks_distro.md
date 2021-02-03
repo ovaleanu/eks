@@ -25,9 +25,9 @@ Comparing with AWS EKS, in EKS-D users have access to all the components, contro
 
 I have 3 VMs, one for the master and two workers.
 
-I will update the OS on the control plane nodes and install EKS-D. The following commands should be performed in parallel on all the nodes.
+I will update the OS and install EKS-D. The following commands should be performed in parallel on all the nodes.
 
-_Note: I created this script that will install everything for you. It needs to be run on all nodes._
+_Note: I created this [script](https://github.com/ovaleanujnpr/eks/blob/master/scripts/centos_prep_install_k8s_eks.sh) that will install everything for you. It needs to be run on all nodes._
 
 [Tmux](https://github.com/tmux/tmux/wiki) can be used to run commands on multiple compute instances at the same time. Labs in this tutorial may require running the same commands across multiple compute instances, in those cases consider using tmux and splitting a window into multiple panes with synchronize-panes enabled to speed up the provisioning process.
 
