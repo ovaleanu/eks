@@ -1,6 +1,6 @@
 #!/bin/bash
 
-sed -i '/ swap / s/^\(.*\)$/#\1/g' /etc/fstab
+sed -i '/swap/ s/^\(.*\)$/#\1/g' /etc/fstab
 swapoff -a
 setenforce 0
 sed -i 's/^SELINUX=enforcing$/SELINUX=permissive/' /etc/selinux/config
@@ -19,7 +19,7 @@ yum -y update && yum install -y epel-release yum-utils device-mapper-persistent-
 yum-config-manager --add-repo \
   https://download.docker.com/linux/centos/docker-ce.repo
 
-yum -y update && yum install -y containerd.io-1.2.13 docker-ce-19.03.11 docker-ce-cli-19.03.11
+yum -y update && yum install -y containerd.io docker-ce-19.03.11 docker-ce-cli-19.03.11
 
 mkdir /etc/docker
 
@@ -43,12 +43,12 @@ systemctl daemon-reload
 systemctl enable --now docker
 
 mkdir -p /opt/cni/bin
-wget -q https://distro.eks.amazonaws.com/kubernetes-1-18/releases/1/artifacts/plugins/v0.8.7/cni-plugins-linux-amd64-v0.8.7.tar.gz
+wget -q https://distro.eks.amazonaws.com/kubernetes-1-19/releases/1/artifacts/plugins/v0.8.7/cni-plugins-linux-amd64-v0.8.7.tar.gz
 tar zxf cni-plugins-linux-amd64-v0.8.7.tar.gz -C /opt/cni/bin/
 
-wget -q https://distro.eks.amazonaws.com/kubernetes-1-18/releases/1/artifacts/kubernetes/v1.18.9/bin/linux/amd64/kubeadm
-wget -q https://distro.eks.amazonaws.com/kubernetes-1-18/releases/1/artifacts/kubernetes/v1.18.9/bin/linux/amd64/kubelet
-wget -q https://distro.eks.amazonaws.com/kubernetes-1-18/releases/1/artifacts/kubernetes/v1.18.9/bin/linux/amd64/kubectl
+wget -q https://distro.eks.amazonaws.com/kubernetes-1-19/releases/1/artifacts/kubernetes/v1.19.6/bin/linux/amd64/kubeadm
+wget -q https://distro.eks.amazonaws.com/kubernetes-1-19/releases/1/artifacts/kubernetes/v1.19.6/bin/linux/amd64/kubelet
+wget -q https://distro.eks.amazonaws.com/kubernetes-1-19/releases/1/artifacts/kubernetes/v1.19.6/bin/linux/amd64/kubectl
 mv kubeadm kubelet kubectl /usr/bin/
 chmod +x /usr/bin/kubeadm /usr/bin/kubelet /usr/bin/kubectl
 
@@ -89,23 +89,3 @@ WantedBy=multi-user.target
 EOF'
 
 systemctl enable kubelet
-
-echo "Download EKS-D docker images" && \
-sleep 1 && \
-docker pull public.ecr.aws/eks-distro/etcd-io/etcd:v3.4.14-eks-1-18-1 && \
-sleep 2 && \
-docker pull public.ecr.aws/eks-distro/kubernetes/pause:v1.18.9-eks-1-18-1 && \
-sleep 2 && \
-docker pull public.ecr.aws/eks-distro/kubernetes/kube-scheduler:v1.18.9-eks-1-18-1 && \
-sleep 2 && \
-docker pull public.ecr.aws/eks-distro/kubernetes/kube-proxy:v1.18.9-eks-1-18-1 && \
-sleep 2 && \
-docker pull public.ecr.aws/eks-distro/kubernetes/kube-apiserver:v1.18.9-eks-1-18-1 && \
-sleep 2 && \
-docker pull public.ecr.aws/eks-distro/kubernetes/kube-controller-manager:v1.18.9-eks-1-18-1 && \
-sleep 2 && \
-docker pull public.ecr.aws/eks-distro/coredns/coredns:v1.7.0-eks-1-18-1 && \
-echo 'All EKS-D docker images downloaded'
-
-docker tag public.ecr.aws/eks-distro/kubernetes/pause:v1.18.9-eks-1-18-1 public.ecr.aws/eks-distro/kubernetes/pause:3.2 && \
-docker tag public.ecr.aws/eks-distro/coredns/coredns:v1.7.0-eks-1-18-1 public.ecr.aws/eks-distro/kubernetes/coredns:1.6.7
