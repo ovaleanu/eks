@@ -6,11 +6,11 @@ setenforce 0
 sed -i 's/^SELINUX=enforcing$/SELINUX=permissive/' /etc/selinux/config
 systemctl stop firewalld; systemctl disable firewalld
 
-bash -c 'cat <<EOF > /etc/sysctl.d/k8s.conf
+cat <<EOF > /etc/sysctl.d/k8s.conf
 net.bridge.bridge-nf-call-iptables  = 1
 net.ipv4.ip_forward                 = 1
 net.bridge.bridge-nf-call-ip6tables = 1
-EOF'
+EOF
 
 sysctl --system
 
@@ -23,7 +23,7 @@ yum -y update && yum install -y containerd.io docker-ce-19.03.11 docker-ce-cli-1
 
 mkdir /etc/docker
 
-bash -c 'cat <<EOF > /etc/docker/daemon.json
+cat <<EOF > /etc/docker/daemon.json
 {
   "exec-opts": ["native.cgroupdriver=systemd"],
   "log-driver": "json-file",
@@ -35,7 +35,7 @@ bash -c 'cat <<EOF > /etc/docker/daemon.json
     "overlay2.override_kernel_check=true"
   ]
 }
-EOF'
+EOF
 
 mkdir -p /etc/systemd/system/docker.service.d
 
@@ -57,7 +57,7 @@ yum -y install conntrack ebtables socat
 mkdir -p /etc/kubernetes/manifests
 mkdir -p /usr/lib/systemd/system/kubelet.service.d
 
-bash -c 'cat <<EOF > /usr/lib/systemd/system/kubelet.service.d/10-kubeadm.conf
+cat <<EOF > /usr/lib/systemd/system/kubelet.service.d/10-kubeadm.conf
 # Note: This dropin only works with kubeadm and kubelet v1.11+
 [Service]
 Environment="KUBELET_KUBECONFIG_ARGS=--bootstrap-kubeconfig=/etc/kubernetes/bootstrap-kubelet.conf --kubeconfig=/etc/kubernetes/kubelet.conf"
@@ -69,9 +69,9 @@ EnvironmentFile=-/var/lib/kubelet/kubeadm-flags.env
 EnvironmentFile=-/etc/sysconfig/kubelet
 ExecStart=
 ExecStart=/usr/bin/kubelet \$KUBELET_KUBECONFIG_ARGS \$KUBELET_CONFIG_ARGS \$KUBELET_KUBEADM_ARGS \$KUBELET_EXTRA_ARGS
-EOF'
+EOF
 
-bash -c 'cat <<EOF > /usr/lib/systemd/system/kubelet.service
+cat <<EOF > /usr/lib/systemd/system/kubelet.service
 [Unit]
 Description=kubelet: The Kubernetes Node Agent
 Documentation=https://kubernetes.io/docs/
@@ -86,6 +86,6 @@ RestartSec=10
 
 [Install]
 WantedBy=multi-user.target
-EOF'
+EOF
 
 systemctl enable kubelet
