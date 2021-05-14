@@ -5,7 +5,7 @@ Couple of months ago, AWS introduced EKS Distro (EKS-D) a Kubernetes distributio
 In EKS on AWS EC2 setting a managed control plane — control plane runs in an account managed by AWS, and the Kubernetes API is exposed via the AWS EKS endpoint associated with your cluster. Each AWS EKS cluster control plane is single-tenant and unique, and runs on its own set of AWS EC2 instances.
 Users can choose between a self-managed data plane or a aws managed data plane using node groups
 
-![](https://github.com/ovaleanujnpr/eks/blob/master/images/eks-1-components.png)
+![](https://github.com/ovaleanu/eks/blob/master/images/eks-1-components.png)
 
 Users cannot access the contol plane components. They can access only the daemonsets deployed on nodes and the workloads.
 Contrail is deployed on AWS EKS replacing aws node daemonsets. The installation procedure for how to install Contrail on EKS is [here](https://www.juniper.net/documentation/en_US/contrail20/topics/task/installation/how-to-install-contrail-aws-eks.html).
@@ -15,13 +15,13 @@ In here I will focus on the integration of Contrail with EKS-D.
 In EKS-D all the components are managed by the users. Creating the cluster can be done in different ways. A nomber of [AWS Partners](https://distro.eks.amazonaws.com/community/partners/) are already providing various installation methods.
 All the LCM of the nodes, HA control plane, etc should be done by the users.
 
-![](https://github.com/ovaleanujnpr/eks/blob/master/images/eks-2-components.png)
+![](https://github.com/ovaleanu/eks/blob/master/images/eks-2-components.png)
 
 For this demo I will use `kubeadm` to bootstrap the cluster.
 
 Comparing with AWS EKS, in EKS-D users have access to all the components, control plane and other worloads running on data plane.
 
-![](https://github.com/ovaleanujnpr/eks/blob/master/images/eks-3-components.png)
+![](https://github.com/ovaleanu/eks/blob/master/images/eks-3-components.png)
 
 For this demo, I have prepared 3 x VMs for control plane, 3 x VMs for data plane and 1 x VM with HAproxy for Kubernetes API server.
 
@@ -69,7 +69,7 @@ Next, I will update the OS on the control plane nodes and install EKS-D. The fol
 
 [Tmux](https://github.com/tmux/tmux/wiki) can be used to run commands on multiple compute instances at the same time. Labs in this tutorial may require running the same commands across multiple compute instances, in those cases consider using tmux and splitting a window into multiple panes with synchronize-panes enabled to speed up the provisioning process.
 
-![](https://github.com/ovaleanujnpr/eks/blob/master/images/eks-4-components.png)
+![](https://github.com/ovaleanu/eks/blob/master/images/eks-4-components.png)
 
 _Enable synchronize-panes by pressing ctrl+b followed by shift+:. Next type set synchronize-panes on at the prompt. To disable synchronization: set synchronize-panes off._
 
@@ -304,7 +304,7 @@ $ sudo cp -i /etc/kubernetes/admin.conf $HOME/.kube/config
 $ sudo chown $(id -u):$(id -g) $HOME/.kube/config
 ```
 
-The EKS-D cluster is ready. You only need to apply the contrail single yaml as described in this [Wiki](https://github.com/ovaleanujnpr/kubernetes/wiki/Installing-Kubernetes-with-Contrail#on-the-master).
+The EKS-D cluster is ready. You only need to apply the contrail single yaml as described in this [Wiki](https://github.com/ovaleanu/kubernetes/wiki/Installing-Kubernetes-with-Contrail#on-the-master).
 ```
 $ kubectl get nodes -o wide
 NAME                            STATUS     ROLES    AGE     VERSION              INTERNAL-IP    EXTERNAL-IP   OS-IMAGE                KERNEL-VERSION                CONTAINER-RUNTIME

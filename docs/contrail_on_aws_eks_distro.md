@@ -7,7 +7,7 @@ Couple of months ago, AWS introduced EKS Distro (EKS-D) a Kubernetes distributio
 In EKS on AWS EC2 setting a managed control plane — control plane runs in an account managed by AWS, and the Kubernetes API is exposed via the AWS EKS endpoint associated with your cluster. Each AWS EKS cluster control plane is single-tenant and unique, and runs on its own set of AWS EC2 instances.
 Users can choose between a self-managed data plane or a aws managed data plane using node groups
 
-![](https://github.com/ovaleanujnpr/eks/blob/master/images/eks-1-components.png)
+![](https://github.com/ovaleanu/eks/blob/master/images/eks-1-components.png)
 
 Users cannot access the control plane components. They can access only the DaemonSets deployed on nodes and the workloads.
 Contrail is deployed on AWS EKS replacing aws node daemonsets. The installation procedure for how to install Contrail on AWS EKS is [here](https://www.juniper.net/documentation/en_US/contrail20/topics/task/installation/how-to-install-contrail-aws-eks.html).
@@ -17,17 +17,17 @@ On this article, I will focus on the integration of Contrail with EKS-D on-premi
 In EKS-D all the components are managed by the users. Creating the cluster can be done in different ways. A nomber of [AWS Partners](https://distro.eks.amazonaws.com/community/partners/) are already providing various installation methods.
 All the LCM of the nodes, HA control plane, etc should be done by the users.
 
-![](https://github.com/ovaleanujnpr/eks/blob/master/images/eks-2-components.png)
+![](https://github.com/ovaleanu/eks/blob/master/images/eks-2-components.png)
 
 For this demo I chose to use `kubeadm` to bootstrap the cluster.
 
 Comparing with AWS EKS, in EKS-D users have access to all the components, control plane and other worloads running on data plane.
 
-![](https://github.com/ovaleanujnpr/eks/blob/master/images/eks-3-components.png)
+![](https://github.com/ovaleanu/eks/blob/master/images/eks-3-components.png)
 
 I have one VM for this demonstration.
 
-_Note: I created this [script](https://github.com/ovaleanujnpr/eks/blob/master/scripts/centos_prep_install_k8s_eks.sh) that will install everything for you._
+_Note: I created this [script](https://github.com/ovaleanu/eks/blob/master/scripts/centos_prep_install_k8s_eks.sh) that will install everything for you._
 
 
 ### Updating the OS configurations
@@ -312,7 +312,7 @@ On the master node as non-root, run the following commands
 [lab@master1-tf ~]$ sudo chown $(id -u):$(id -g) $HOME/.kube/config
 ```
 
-The EKS-D cluster is ready. You only need to apply the contrail single yaml as described in this [Wiki](https://github.com/ovaleanujnpr/kubernetes/wiki/Installing-Kubernetes-with-Contrail#on-the-master).
+The EKS-D cluster is ready. You only need to apply the contrail single yaml as described in this [Wiki](https://github.com/ovaleanu/kubernetes/wiki/Installing-Kubernetes-with-Contrail#on-the-master).
 ```
 [lab@master1-tf ~]$ kubectl get no -owide
 NAME         STATUS   ROLES    AGE     VERSION              INTERNAL-IP       EXTERNAL-IP   OS-IMAGE                KERNEL-VERSION                CONTAINER-RUNTIME
